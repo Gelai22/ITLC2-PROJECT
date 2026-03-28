@@ -1,0 +1,57 @@
+/* File: print_receipt.css */
+
+@media print {
+    /* 1. Reset the entire page layout for printing */
+    body {
+        margin: 0;
+        padding: 0;
+        min-width: 0 !important;
+    }
+
+    /* 2. Hide Non-Essential UI Elements */
+    /* Selectors based on the main template structure: */
+
+    /* Hide the sidebar */
+    .sidebar-nav {
+        display: none !important;
+    }
+
+    /* Hide the top header/navbar area */
+    .app-header {
+        display: none !important;
+    }
+
+    /* Hide the utility buttons on the receipt (Print/View Active Reservations) */
+    .d-grid.gap-2,
+    .d-flex.justify-content-end.mt-4.gap-2 {
+        display: none !important;
+    }
+
+    /* 3. Re-size and Center the Main Content */
+    .page-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    /* Ensure the content area takes full width when sidebar is hidden */
+    .content-wrapper {
+        padding: 20px !important; /* Add some padding back for clean edges */
+        margin-left: 0 !important;
+    }
+
+    /* Center the main receipt card, or ensure it uses full width */
+    .container-fluid.content-wrapper > .card {
+        margin: 0 auto;
+        border: none !important;
+        box-shadow: none !important;
+        width: 100%;
+        max-width: 800px; /* Adjust as needed */
+    }
+
+    /* Ensure card body content is visible */
+    .card-body {
+        padding: 0;
+    }
+}

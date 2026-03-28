@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="600.0" styleClass="bg-light" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parkupjavafx.controllers.VehicleReviewController">
+
+    <top>
+        <VBox style="-fx-background-color: #e1f5fa; -fx-padding: 20;">
+            <Label text="Post-Rental Experience Review" textFill="#0085db">
+                <font><Font name="System Bold" size="18.0" /></font>
+            </Label>
+            <Label text="Please confirm the vehicle return and share your experience rating below." styleClass="text-muted" />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20.0">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+
+            <VBox spacing="15.0" styleClass="card">
+                <Label fx:id="headerLabel" text="Rental Summary #R..." textFill="#111c2d">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                </Label>
+
+                <GridPane vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <children>
+                        <Label styleClass="text-muted" text="Vehicle:" />
+                        <Label fx:id="vehicleLabel" text="..." GridPane.columnIndex="1" style="-fx-font-weight: bold;"/>
+
+                        <Label styleClass="text-muted" text="Return Date:" GridPane.rowIndex="1" />
+                        <Label fx:id="returnDateLabel" text="..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label styleClass="text-muted" text="Total Cost Paid:" GridPane.rowIndex="2" />
+                        <Label fx:id="costLabel" text="..." textFill="#4bd08b" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+
+                        <Label styleClass="text-muted" text="Status:" GridPane.rowIndex="3" />
+                        <Label text="AWAITING_FINALIZATION" style="-fx-background-color: #fb977d; -fx-text-fill: white; -fx-padding: 2 6; -fx-background-radius: 4;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    </children>
+                </GridPane>
+
+                <Label text="Rate Your Experience" textFill="#111c2d">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+
+                <ComboBox fx:id="ratingCombo" maxWidth="1.7976931348623157E308" styleClass="combo-box" promptText="Select Rating" />
+
+                <Label text="Additional Feedback (Optional)" styleClass="text-muted" />
+                <TextArea fx:id="feedbackArea" prefHeight="80.0" promptText="Any comments..." styleClass="text-field" wrapText="true" />
+
+                <Button maxWidth="1.7976931348623157E308" onAction="#onSubmitReviewClick" styleClass="btn-primary" text="Submit Review &amp; Finalize Return" />
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

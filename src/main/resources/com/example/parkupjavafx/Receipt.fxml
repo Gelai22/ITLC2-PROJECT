@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="550.0" prefWidth="600.0" styleClass="bg-light" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parkupjavafx.controllers.ReceiptController">
+
+    <top>
+        <VBox style="-fx-background-color: #dffff3; -fx-padding: 20;">
+            <Label text="Payment Successful!" textFill="#4bd08b">
+                <font><Font name="System Bold" size="18.0" /></font>
+            </Label>
+            <Label text="Your reservation is confirmed. Your receipt is below." styleClass="text-muted" />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20.0">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+
+            <VBox fx:id="printableArea" spacing="15.0" styleClass="card">
+                <HBox alignment="CENTER_LEFT">
+                    <Label fx:id="receiptTitle" text="Official Receipt #R..." textFill="#111c2d">
+                        <font><Font name="System Bold" size="16.0" /></font>
+                    </Label>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="datePaidLabel" text="Date Paid: ..." style="-fx-font-size: 11px;" styleClass="text-muted" />
+                </HBox>
+
+                <GridPane hgap="10.0" style="-fx-background-color: #f8f9fa; -fx-padding: 15;" vgap="10.0">
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <children>
+                        <Label style="-fx-font-weight: bold;" text="Vehicle:" />
+                        <Label fx:id="vehicleLabel" text="..." GridPane.columnIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Rental Period:" GridPane.rowIndex="1" />
+                        <Label fx:id="periodLabel" text="..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label style="-fx-font-weight: bold;" text="Status:" GridPane.rowIndex="2" />
+                        <Label style="-fx-background-color: #4bd08b; -fx-text-fill: white; -fx-padding: 2 6; -fx-background-radius: 4;" text="CONFIRMED" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label style="-fx-font-weight: bold;" text="Payment Method:" GridPane.rowIndex="3" />
+                        <Label text="Online (Placeholder)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    </children>
+                </GridPane>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <Label text="FINAL AMOUNT:">
+                        <font><Font size="14.0" /></font>
+                    </Label>
+                    <Label fx:id="amountLabel" text="P..." textFill="#4bd08b">
+                        <font><Font name="System Bold" size="24.0" /></font>
+                    </Label>
+                </HBox>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <Button onAction="#onPrintClick" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 5;" text="Print" />
+                    <Button onAction="#onCloseClick" styleClass="btn-success" text="Confirm" />
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainBorderPane" styleClass="bg-light" stylesheets="@css/application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.parkupjavafx.controllers.DashboardController">
+
+    <left>
+        <VBox prefWidth="270.0" spacing="10.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 0);">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+
+            <VBox alignment="CENTER_LEFT" spacing="10.0">
+                <ImageView fitHeight="50.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../images/logos/logo.png" />
+                    </image>
+                </ImageView>
+                <Label styleClass="text-muted" text="RENTALS">
+                    <font>
+                        <Font name="System Bold" size="12.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="30.0" />
+                    </VBox.margin>
+                </Label>
+            </VBox>
+
+            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" onAction="#onBrowseClick" styleClass="sidebar-btn" text="Browse &amp; Reserve Cars">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Button>
+
+            <Label styleClass="text-muted" text="Rental Management">
+                <font>
+                    <Font name="System Bold" size="12.0" />
+                </font>
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </Label>
+
+            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" onAction="#onPendingReservationsClick" styleClass="sidebar-btn" text="Pending Reservations">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Button>
+
+            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" onAction="#onPendingPaymentsClick" styleClass="sidebar-btn" text="Pending Payments">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Button>
+
+            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" onAction="#onOngoingRentalsClick" styleClass="sidebar-btn" text="Ongoing Rentals">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Button>
+
+            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" onAction="#onRentalHistoryClick" styleClass="sidebar-btn" text="Rental History">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Button>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Button maxWidth="1.7976931348623157E308" onAction="#onLogoutClick" style="-fx-background-color: #ffe5e5; -fx-text-fill: #ff5c5c; -fx-background-radius: 10; -fx-padding: 10; -fx-cursor: hand; -fx-font-weight: bold;" text="Logout" />
+        </VBox>
+    </left>
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #eaeaea; -fx-border-width: 0 0 1 0;">
+            <padding>
+                <Insets left="20.0" right="30.0" />
+            </padding>
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Label fx:id="userNameLabel" text="Client Name">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+            </Label>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../images/placeholder.jpg" />
+                </image>
+            </ImageView>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <VBox spacing="20.0">
+                <padding>
+                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                </padding>
+
+                <VBox style="-fx-background-color: #ecf2ff; -fx-background-radius: 10; -fx-padding: 20;">
+                    <Label text="Browse Available Rental Cars" textFill="#2a3547">
+                        <font>
+                            <Font name="System Bold" size="20.0" />
+                        </font>
+                    </Label>
+                    <Label text="Select your ideal vehicle from our fleet and start your reservation." styleClass="text-muted" />
+                </VBox>
+
+                <VBox spacing="15.0" styleClass="card">
+                    <Label text="Find Your Car">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+
+                    <HBox spacing="10.0">
+                        <TextField fx:id="searchField" promptText="Search by Model or Make" styleClass="text-field" HBox.hgrow="ALWAYS" />
+                        <Button onAction="#onSearchClick" styleClass="btn-primary" text="Search" prefWidth="100.0" />
+                    </HBox>
+
+                    <HBox spacing="15.0" alignment="BOTTOM_LEFT">
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <Label text="Vehicle Type" styleClass="text-muted" />
+                            <ComboBox fx:id="typeFilter" maxWidth="1.7976931348623157E308" styleClass="combo-box" />
+                        </VBox>
+
+                        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                            <Label text="Price Range" styleClass="text-muted" />
+                            <ComboBox fx:id="priceFilter" maxWidth="1.7976931348623157E308" styleClass="combo-box" />
+                        </VBox>
+
+                        <Button onAction="#onApplyFiltersClick" styleClass="btn-outline-primary" text="Apply Filters" HBox.hgrow="ALWAYS" maxWidth="1.7976931348623157E308"/>
+                    </HBox>
+                </VBox>
+
+                <FlowPane fx:id="vehicleContainer" hgap="20.0" vgap="20.0" />
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
