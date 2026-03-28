@@ -1,0 +1,17 @@
+.fixed-top-banner {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    min-height: 65px;
+    background-color: #D95D00;
+    z-index: 1100;
+}
+
+.app-header {
+    top: 80px !important;
+    z-index: 1050;
+}
+
+.content-padding-fix {
+    padding-top: 130px !important;
+}
