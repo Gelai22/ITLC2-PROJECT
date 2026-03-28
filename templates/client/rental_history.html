@@ -1,0 +1,73 @@
+<body th:replace="layouts/client_master :: master(content = ~{::.content-wrapper}, title = 'Rental History', currentPage='my_reservations')">
+
+<div class="container-fluid content-wrapper">
+    <div class="card bg-light-info shadow-none position-relative overflow-hidden mb-4">
+        <div class="card-body">
+            <h4 class="mb-0 fw-semibold">Completed Rental History</h4>
+            <p class="mb-0">Review your past vehicle rental transactions and retrieve invoices.</p>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs" id="myReservationsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" th:href="@{/reservation}" role="tab" aria-selected="false">
+                Active / Pending <span th:if="${pendingCount != null}" class="badge bg-primary ms-1" th:text="${pendingCount}">0</span>
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" th:href="@{/reservation/history}" role="tab" aria-selected="true">
+                Rental History
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content border border-top-0 bg-white p-4">
+
+        <div class="tab-pane fade show active" id="history" role="tabpanel">
+            <h5 class="card-title fw-semibold mb-3">Past Transactions</h5>
+
+            <div th:if="${historyReservations == null or historyReservations.isEmpty()}" class="alert alert-info" role="alert">
+                You have no completed rental history at this time.
+            </div>
+
+            <div th:if="${historyReservations != null and !historyReservations.isEmpty()}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle text-nowrap">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Vehicle</th>
+                        <th scope="col">Rental Period</th>
+                        <th scope="col">Return Date</th>
+                        <th scope="col">Final Cost</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="log, i : ${historyReservations}">
+                        <th scope="row" th:text="'#R' + ${log.reservationId}">#R0988</th>
+
+                        <td>
+                            <span class="fw-semibold" th:text="${log.vehicleModel + ' (' + log.vehicleYear + ')'}">Vehicle Model (Year)</span>
+                            <p class="text-muted mb-0 fs-3" th:text="${log.plateNumber}">Plate No.</p>
+                        </td>
+
+                        <td th:with="days=${T(java.time.temporal.ChronoUnit).DAYS.between(log.pickupDate, log.returnDate)}"
+                            th:text="${days + ' days'}">4 days</td>
+
+                        <td th:text="${#temporals.format(log.returnDate, 'MMM d, yyyy')}">Sept 5, 2025</td>
+
+                        <td th:text="${'₱' + #numbers.formatDecimal(log.totalCost, 0, 'COMMA', 2, 'POINT')}">₱440.00</td>
+
+                        <td>
+                            <span class="badge bg-success fw-semibold" th:text="${log.status}">COMPLETED</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>

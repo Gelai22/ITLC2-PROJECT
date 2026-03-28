@@ -1,0 +1,113 @@
+<body th:replace="layouts/client_master :: master(content = ~{::.content-wrapper}, title = 'Browse Cars', currentPage='client/browse')">
+
+<div class="container-fluid content-wrapper">
+    <div class="card bg-light-primary shadow-none position-relative overflow-hidden mb-4">
+        <div class="card-body">
+            <h4 class="mb-0 fw-semibold">Browse Available Rental Cars</h4>
+            <p class="mb-0">Select your ideal vehicle from our fleet and start your reservation.</p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <h5 class="card-title fw-semibold mb-3">Find Your Car</h5>
+            <form th:action="@{/browse}" method="get" id="searchForm" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-10">
+                        <input type="text"
+                               name="search"
+                               id="browse-search-input"
+                               class="form-control"
+                               placeholder="Search by Model or Make"
+                               aria-label="Search"
+                               th:value="${search}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100" id="searchButton">Search</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr class="my-3"/>
+
+            <h5 class="card-title fw-semibold mb-3">Refine by Filter</h5>
+            <form th:action="@{/browse}" method="get" id="filterForm">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="vehicleTypeFilter" class="form-label text-muted fs-3">Vehicle Type</label>
+                        <select class="form-select" name="vehicleType" id="vehicleTypeFilter">
+                            <option value="">All Types</option>
+                            <option value="SEDAN" th:selected="${vehicleType == 'SEDAN'}">Sedan</option>
+                            <option value="SUV" th:selected="${vehicleType == 'SUV'}">SUV</option>
+                            <option value="TRUCK" th:selected="${vehicleType == 'TRUCK'}">Truck</option>
+                            <option value="VAN" th:selected="${vehicleType == 'VAN'}">Van/Minivan</option>
+                            <option value="COUPE" th:selected="${vehicleType == 'COUPE'}">Coupe</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="priceRangeFilter" class="form-label text-muted fs-3">Price Range</label>
+                        <select class="form-select" name="priceRange" id="priceRangeFilter">
+                            <option value="">Price Range</option>
+                            <option value="under500" th:selected="${priceRange == 'under500'}">Under ₱500/day</option>
+                            <option value="500to1000" th:selected="${priceRange == '500to1000'}">₱500 - ₱1000/day</option>
+                            <option value="over1000" th:selected="${priceRange == 'over1000'}">Over ₱1000/day</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-outline-primary w-100">Apply Filters</button>
+                        <input type="hidden" name="search" id="filterFormSearch">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="row" id="vehicle-list-container">
+        <div class="col-md-6 col-lg-4 d-flex align-items-stretch" th:each="vehicle : ${vehicles}">
+            <div class="card w-100 shadow-lg">
+
+                <img th:if="${vehicle.imagePath != null and vehicle.imagePath != ''}"
+                     th:src="${vehicle.imagePath}"
+                     class="card-img-top"
+                     th:alt="${vehicle.vehicleModel}"
+                     style="height: 200px; object-fit: cover;">
+
+                <img th:unless="${vehicle.imagePath != null and vehicle.imagePath != ''}"
+                     th:src="@{/images/vehicles/placeholder.jpg}"
+                     class="card-img-top"
+                     th:alt="${vehicle.vehicleModel}"
+                     style="height: 200px; object-fit: cover;">
+
+                <div class="card-body p-4">
+                    <span class="badge mb-2"
+                          th:classappend="${vehicle.status == 'AVAILABLE'} ? 'bg-success text-white' : 'bg-danger text-white'"
+                          th:text="${vehicle.status}">Status</span>
+
+                    <h5 class="card-title fw-semibold" th:text="${vehicle.vehicleModel + ' (' + vehicle.year + ')'}">Vehicle Model (Year)</h5>
+
+                    <p class="fs-3 mb-2">
+                        <span class="fw-bold text-dark fs-5"
+                              th:text="${'₱' + #numbers.formatDecimal(vehicle.rentalPrice, 0, 'COMMA', 2, 'POINT')}">Price</span> / day
+                    </p>
+
+                    <ul class="list-unstyled fs-3 text-muted">
+                        <li>
+                            <i class="ti ti-seat me-1 text-primary"></i>
+                            <span th:text="${vehicle.numberOfSeats + ' Seats'}">Seats</span>
+                        </li>
+                        <li>
+                            <i class="ti ti-car me-1 text-primary"></i>
+                            <span th:text="${#strings.toUpperCase(vehicle.vehicleType)}">Type</span>
+                        </li>
+                    </ul>
+                    <a th:href="@{/reservation/add(vehicleId=${vehicle.id})}" class="btn btn-primary mt-3 d-block">Reserve Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/js/browse-filter.js}"></script>
+</body>

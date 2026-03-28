@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="layouts/auth_master :: auth_master(authContent = ~{::.register-content}, pageTitle = 'Admin Registration', loginLink = @{/admin/login})">
+<body>
+<div class="register-content">
+    <h5 class="text-center fw-semibold mb-4">Admin Registration</h5>
+
+    <div th:if="${emailExistsError}" class="alert alert-danger" role="alert">
+        <p class="fs-4 mb-0" th:text="${emailExistsError}"></p>
+    </div>
+
+    <form th:action="@{/admin/register}" th:object="${admin}" method="post">
+
+        <div class="mb-3">
+            <label for="nameInput" class="form-label">Username</label>
+            <input type="text" th:field="*{employeeName}" class="form-control"
+                   th:classappend="${#fields.hasErrors('employeeName')} ? 'is-invalid' : ''" id="nameInput" required>
+            <div th:if="${#fields.hasErrors('employeeName')}" th:errors="*{employeeName}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="emailInput" class="form-label">Email Address</label>
+            <input type="email" th:field="*{emailAddress}" class="form-control"
+                   th:classappend="${#fields.hasErrors('emailAddress')} ? 'is-invalid' : ''" id="emailInput" required>
+            <div th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}" class="invalid-feedback"></div>
+        </div>
+
+        <div class="mb-4">
+            <label for="passwordRegisterInput" class="form-label">Password</label>
+            <div class="input-group">
+                <input type="password" th:field="*{password}" class="form-control"
+                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" id="passwordRegisterInput" required>
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('passwordRegisterInput', 'toggleIconRegister')">
+                    <i id="toggleIconRegister" class="ti ti-eye"></i>
+                </button>
+            </div>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback d-block"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="systemKeyInput" class="form-label">System Key (Required)</label>
+            <input type="password" name="systemKey" class="form-control"
+                   th:classappend="${systemKeyError != null} ? 'is-invalid' : ''" id="systemKeyInput" required>
+            <div th:if="${systemKeyError != null}" th:text="${systemKeyError}" class="invalid-feedback"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4">Sign Up</button>
+
+        <div class="d-flex align-items-center justify-content-center">
+            <p class="fs-4 mb-0 fw-bold">Already an Admin?</p>
+            <a class="text-primary fw-bold ms-2" th:href="@{/admin/login}">Sign In</a>
+        </div>
+
+        <a th:href="@{/}" class="btn btn-outline-light w-100 mt-3 text-dark">
+            <i class="ti ti-arrow-left me-1"></i> Back to Welcome Page
+        </a>
+    </form>
+</div>
+</body>
+</html>

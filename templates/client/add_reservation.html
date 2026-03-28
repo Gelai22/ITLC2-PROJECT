@@ -1,0 +1,126 @@
+<body xmlns:th="http://www.thymeleaf.org"
+      th:replace="layouts/client_master :: master(content = ~{::.content-wrapper}, title = 'New Reservation', currentPage='')">
+
+<div class="container-fluid content-wrapper">
+    <div class="card bg-light">
+        <div class="card-body">
+            <h2 class="card-title fw-semibold mb-4">Create New Rental Reservation</h2>
+
+            <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                <span th:text="${errorMessage}"></span>
+            </div>
+            <form th:action="@{/reservation/create}" th:object="${reservationDTO}" method="post">
+
+                <input type="hidden" th:field="*{vehicleId}" />
+                <input type="hidden" th:field="*{vehicleType}" th:value="${selectedVehicle != null} ? ${selectedVehicle.vehicleType} : ''" />
+
+                <div th:if="${selectedVehicle != null}" class="card shadow-sm mb-4 bg-light-warning">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3 fw-bold text-dark"><i class="ti ti-car me-2"></i> Selected Vehicle</h5>
+                        <div class="row align-items-center">
+
+                            <div class="col-md-3">
+                                <img th:src="${selectedVehicle.imagePath != null and selectedVehicle.imagePath != '' ?
+                                              selectedVehicle.imagePath :
+                                              '/images/vehicles/placeholder.jpg'}"
+                                     class="img-fluid rounded"
+                                     th:alt="${selectedVehicle.vehicleModel}"
+                                     style="max-height: 120px; object-fit: cover;">
+                            </div>
+
+                            <div class="col-md-9">
+                                <h4 class="fw-semibold" th:text="${selectedVehicle.vehicleModel + ' (' + selectedVehicle.year + ')'}">Toyota Supra (2004)</h4>
+
+                                <p class="fs-4 mb-1">
+                                    Plate No: <span class="fw-bold text-dark" th:text="${selectedVehicle.plateNumber}">AAA-0000</span>
+                                </p>
+
+                                <p class="fs-4 mb-1">
+                                    Daily Rate: <span class="fw-bold text-success fs-5"
+                                                      th:text="${'₱' + #numbers.formatDecimal(selectedVehicle.rentalPrice, 0, 'COMMA', 2, 'POINT')}">₱699.00</span>
+                                </p>
+
+                                <ul class="list-unstyled d-flex gap-3 fs-4 text-muted">
+                                    <li th:text="${selectedVehicle.numberOfSeats + ' Seats'}">5 Seats</li>
+                                    <li th:text="${#strings.toUpperCase(selectedVehicle.vehicleType)}">COUPE</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3"><i class="ti ti-calendar me-2"></i> Pickup Details</h5>
+                                <div class="mb-3">
+                                    <label for="pickupDate" class="form-label">Pickup Date</label>
+                                    <input type="date" th:field="*{pickupDate}" class="form-control" id="pickupDate" required>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('pickupDate')}" th:errors="*{pickupDate}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pickupLocation" class="form-label">Location</label>
+                                    <select th:field="*{pickupLocation}" class="form-select" id="pickupLocation" required>
+                                        <option value="">Select Location</option>
+                                        <option value="MAIN_OFFICE">Main Office - Downtown</option>
+                                        <option value="AIRPORT_A">Airport Terminal A</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('pickupLocation')}" th:errors="*{pickupLocation}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3"><i class="ti ti-calendar-event me-2"></i> Return Details</h5>
+                                <div class="mb-3">
+                                    <label for="returnDate" class="form-label">Return Date</label>
+                                    <input type="date" th:field="*{returnDate}" class="form-control" id="returnDate" required>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('returnDate')}" th:errors="*{returnDate}"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="returnLocation" class="form-label">Location</label>
+                                    <select th:field="*{returnLocation}" class="form-select" id="returnLocation" required>
+                                        <option value="">Select Location</option>
+                                        <option value="MAIN_OFFICE">Main Office - Downtown</option>
+                                        <option value="AIRPORT_A">Airport Terminal A</option>
+                                    </select>
+                                    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('returnLocation')}" th:errors="*{returnLocation}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3"><i class="ti ti-file-text me-2"></i> Additional Notes</h5>
+                        <div class="mb-3">
+                            <textarea th:field="*{notes}" class="form-control" id="notes" rows="3" placeholder="Any special requests or notes..."></textarea>
+                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg py-8">
+                        <i class="ti ti-send me-2"></i> Book Now
+                    </button>
+                    <a th:href="@{/browse}" class="btn btn-outline-secondary">
+                        Cancel and Return to Car Browser
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>

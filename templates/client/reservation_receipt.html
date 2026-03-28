@@ -1,0 +1,61 @@
+<body th:replace="${isAdminView ? 'layouts/admin_master' : 'layouts/client_master'} :: master(content = ~{::.content-wrapper}, title = 'Reservation Receipt', currentPage='my_reservations')">
+
+<div class="container-fluid content-wrapper">
+    <div class="card bg-light-success shadow-none overflow-hidden mb-4">
+        <div class="card-body">
+            <h4 class="mb-0 fw-semibold text-success">Payment Successful!</h4>
+            <p class="mb-0">Your reservation is confirmed. Your receipt is below.</p>
+        </div>
+    </div>
+
+    <div th:if="${reservation != null}" class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center border-bottom mb-4 pb-3">
+                <h5 class="card-title fw-bold mb-0">Official Receipt #R<span th:text="${reservation.id}"></span></h5>
+                <small class="text-muted" th:text="'Date Paid: ' + ${#temporals.format(T(java.time.LocalDateTime).now(), 'MMM d, yyyy HH:mm')}">Date Paid:</small>
+            </div>
+
+            <table class="table table-striped table-sm fs-4">
+                <tbody>
+                <tr>
+                    <td class="fw-bold">Vehicle:</td>
+                    <td th:text="${reservation.vehicle.vehicleModel + ' (' + reservation.vehicle.year + ')'}">Toyota Supra (2004)</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Rental Period:</td>
+                    <td><span th:text="${#temporals.format(reservation.pickupDate, 'MMM d')}"></span> to <span th:text="${#temporals.format(reservation.returnDate, 'MMM d, yyyy')}"></span></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Total Days:</td>
+                    <td th:text="${rentalDays + ' days'}">4 days</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Status:</td>
+                    <td><span class="badge bg-success" th:text="${reservation.status}">CONFIRMED</span></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Payment Method:</td>
+                    <td>Online (Placeholder)</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <hr/>
+
+            <div class="d-flex justify-content-end align-items-center pt-3">
+                <h4 class="mb-0">FINAL AMOUNT:</h4>
+                <h2 class="mb-0 fw-bold ms-3 text-success"
+                    th:text="${'₱' + #numbers.formatDecimal(reservation.totalCost, 0, 'COMMA', 2, 'POINT')}">₱2,796.00</h2>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4 gap-2">
+                <button class="btn btn-outline-secondary" onclick="window.print()"><i class="ti ti-printer me-1"></i> Print</button>
+
+                <a th:if="${isAdminView}" th:href="@{/rental/history}" class="btn btn-success">Confirm</a>
+                <a th:unless="${isAdminView}" th:href="@{/reservation}" class="btn btn-success">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>

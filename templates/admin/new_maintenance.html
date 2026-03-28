@@ -1,0 +1,60 @@
+<body xmlns:th="http://www.thymeleaf.org">
+<body th:replace="layouts/admin_master :: master(~{::main}, 'Log New Service', 'maintenance_log')">
+<main>
+    <div class="container-fluid">
+        <div class="card w-100">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-semibold mb-4">Service Details</h5>
+
+                <form th:action="@{/maintenance/save}" th:object="${maintenanceLog}" method="post">
+
+                    <div class="mb-4">
+                        <label for="vehicleSelect" class="form-label">Vehicle (Plate Number)</label>
+                        <select id="vehicleSelect" th:field="*{vehicleId}" class="form-select" required>
+                            <option value="">-- Select Vehicle --</option>
+                            <option th:each="vehicle : ${vehicles}"
+                                    th:value="${vehicle.id}"
+                                    th:text="${vehicle.vehicleModel} + ' (' + ${vehicle.plateNumber} + ')'">
+                                Sedan - ABC 123
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="serviceType" class="form-label">Type of Service</label>
+                        <input type="text" th:field="*{serviceType}" class="form-control" id="serviceType" placeholder="e.g., Oil Change, Engine Repair" required>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="dateOut" class="form-label">Date Out (Service Start)</label>
+                            <input type="date" th:field="*{dateOut}" class="form-control" id="dateOut" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dateBackEstimate" class="form-label">Estimated Date Back</label>
+                            <input type="date" th:field="*{dateBackEstimate}" class="form-control" id="dateBackEstimate">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="estimatedCost" class="form-label">Estimated Cost (₱4)</label>
+                        <input type="text" th:field="*{estimatedCost}" class="form-control" id="estimatedCost" placeholder="0.00" step="0.01">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="notes" class="form-label">Notes / Service Description</label>
+                        <textarea th:field="*{notes}" class="form-control" id="notes" rows="3" placeholder="Detailed reason for service..."></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a th:href="@{/maintenance}" class="btn btn-light-danger">Cancel</a>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center">
+                            <i class="ti ti-device-floppy me-1"></i> Save Log
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

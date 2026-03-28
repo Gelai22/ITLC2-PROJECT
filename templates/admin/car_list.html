@@ -1,0 +1,112 @@
+<body xmlns:th="http://www.thymeleaf.org"
+      th:replace="layouts/admin_master :: master(~{::main}, 'Car Inventory', 'car_list')">
+<main>
+    <div class="container-fluid">
+
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden mb-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-body">
+                        <div class="d-md-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 fw-semibold">Car Fleet Management</h4>
+                            <div class="d-flex align-items-center mt-3 mt-md-0 gap-3">
+                                <h5 class="mb-0 fw-bold text-success">Total Fleet: <span th:text="${totalCarsCount}">60</span></h5>
+                                <a th:href="@{/car/add}" class="btn btn-primary d-flex align-items-center">
+                                    <i class="ti ti-plus me-1"></i> Add New Vehicle
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card w-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="card-title fw-semibold">Vehicle Inventory</h5>
+                    <input type="text" id="carSearch" class="form-control w-25" placeholder="Search by Model or Plate">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table text-nowrap mb-0 align-middle">
+                        <thead class="text-dark fs-4">
+                        <tr>
+                            <th class="border-bottom-0">
+                                <a th:href="@{/car/list(sortField='plateNumber', sortDir=${sortField == 'plateNumber' and sortDir == 'asc' ? 'desc' : 'asc'})}"
+                                   class="text-dark fw-semibold mb-0 text-decoration-none d-flex align-items-center">
+                                    Plate #
+                                    <i th:if="${sortField == 'plateNumber'}"
+                                       th:classappend="${sortDir == 'asc' ? 'ti ti-chevron-up' : 'ti ti-chevron-down'}"
+                                       class="ms-1 fs-5"></i>
+                                </a>
+                            </th>
+
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Model</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Year</h6></th>
+
+                            <th class="border-bottom-0">
+                                <a th:href="@{/car/list(sortField='rentalPrice', sortDir=${sortField == 'rentalPrice' and sortDir == 'asc' ? 'desc' : 'asc'})}"
+                                   class="text-dark fw-semibold mb-0 text-decoration-none d-flex align-items-center">
+                                    Rate (Per Day)
+                                    <i th:if="${sortField == 'rentalPrice'}"
+                                       th:classappend="${sortDir == 'asc' ? 'ti ti-chevron-up' : 'ti ti-chevron-down'}"
+                                       class="ms-1 fs-5"></i>
+                                </a>
+                            </th>
+
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Status</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Actions</h6></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="car : ${cars}">
+                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0" th:text="${car.plateNumber}">ABC-123</h6></td>
+
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-1" th:text="${car.vehicleModel}">Toyota Camry</h6>
+                            </td>
+
+                            <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${car.year}">2020</p></td>
+
+                            <td class="border-bottom-0">
+                                <p class="mb-0 fw-normal" th:text="'₱' + ${#numbers.formatDecimal(car.rentalPrice, 1, 2)}">$55.00</p>
+                            </td>
+
+                            <td class="border-bottom-0">
+                                <div th:switch="${car.status}">
+                                    <span th:case="'AVAILABLE'" class="badge bg-success rounded-3 fw-semibold">Available</span>
+                                    <span th:case="'RENTED'" class="badge bg-secondary rounded-3 fw-semibold">Rented</span>
+                                    <span th:case="'MAINTENANCE'" class="badge bg-danger rounded-3 fw-semibold">Maint.</span>
+                                    <span th:case="*" class="badge bg-light rounded-3 fw-semibold">Unknown</span>
+                                </div>
+                            </td>
+
+                            <td class="border-bottom-0">
+                                <div class="d-flex align-items-center gap-2">
+                                    <a th:href="@{/car/edit/{id}(id=${car.id})}" class="btn btn-sm btn-outline-info">
+                                        <i class="ti ti-edit"></i> Edit
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger js-delete-trigger"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#deleteVehicleModal"
+                                       th:data-delete-id="${car.id}"          th:data-plate-number="${car.plateNumber}"> <i class="ti ti-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(cars)}">
+                            <td colspan="6" class="text-center py-4">
+                                No vehicles found in the fleet. Please add a new vehicle.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>

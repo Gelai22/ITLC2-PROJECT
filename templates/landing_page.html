@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ParkUp - Welcome</title>
+    <link rel="shortcut icon" type="image/png" th:href="@{/images/logos/favicon.png}" />
+    <link rel="stylesheet" th:href="@{/css/styles.min.css}" />
+    <style>
+        .bg-orange-accent {
+            background-color: #ff9933;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+            class="position-relative overflow-hidden bg-orange-accent min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+                <div class="col-md-8 col-lg-6 col-xxl-4">
+                    <div class="card mb-0">
+                        <div class="card-body p-5">
+
+                            <div class="text-center py-3 w-100 mb-4">
+                                <img th:src="@{/images/logos/logo.png}"
+                                     alt="Your Logo Here"
+                                     width="300"
+                                     class="d-block mx-auto">
+                            </div>
+
+                            <h3 class="text-center fw-semibold mb-2">Welcome to the System</h3>
+                            <p class="text-center mb-5 text-muted">Please select your access type.</p>
+
+                            <div class="mb-4">
+                                <h5 class="fw-semibold">Admin / Staff Access</h5>
+                                <a th:href="@{/admin/login}" class="btn btn-primary btn-lg w-100 mt-2 py-8">
+                                    <i class="ti ti-lock me-2"></i> System Login
+                                </a>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div>
+                                <h5 class="fw-semibold">Client / Customer Portal</h5>
+                                <a th:href="@{/login}" class="btn btn-outline-success btn-lg w-100 mt-2 py-8">
+                                    <i class="ti ti-user me-2"></i> Browse & Rent Cars
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<body th:replace="layouts/client_master :: master(content = ~{::.content-wrapper}, title = 'Confirm Reservation', currentPage='my_reservations')">
+
+<div class="container-fluid content-wrapper">
+    <div class="card bg-light-warning shadow-none overflow-hidden mb-4">
+        <div class="card-body">
+            <h4 class="mb-0 fw-semibold">Reservation Confirmation</h4>
+            <p class="mb-0 text-muted">Review the final details and proceed to simulate payment.</p>
+        </div>
+    </div>
+
+    <div th:if="${reservation != null}" class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title fw-bold mb-4">Booking Summary #R<span th:text="${reservation.id}"></span></h5>
+
+            <table class="table table-borderless fs-4">
+                <tbody>
+                <tr>
+                    <td class="text-muted">Vehicle:</td>
+                    <td class="fw-semibold" th:text="${reservation.vehicle.vehicleModel + ' (' + reservation.vehicle.year + ')'}">Toyota Supra (2004)</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Plate No:</td>
+                    <td th:text="${reservation.vehicle.plateNumber}">AAA-0000</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Pickup Date:</td>
+                    <td th:text="${#temporals.format(reservation.pickupDate, 'MMM d, yyyy')}">Jan 1, 2026</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Return Date:</td>
+                    <td th:text="${#temporals.format(reservation.returnDate, 'MMM d, yyyy')}">Jan 5, 2026</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <hr class="my-4"/>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">TOTAL DUE:</h4>
+                <h1 class="mb-0 fw-bold text-success"
+                    th:text="${'₱' + #numbers.formatDecimal(reservation.totalCost, 0, 'COMMA', 2, 'POINT')}">₱2,796.00</h1>
+            </div>
+
+            <form th:action="@{/reservation/pay/{id}(id=${reservation.id})}" method="post" class="d-grid gap-2">
+                <button type="submit" class="btn btn-success btn-lg py-8">
+                    <i class="ti ti-credit-card me-2"></i> Confirm & Pay (Simulated)
+                </button>
+            </form>
+
+            <a th:href="@{/reservation/cancel/{id}(id=${reservation.id})}" class="btn btn-outline-danger w-100 mt-3">Cancel Reservation</a>
+        </div>
+    </div>
+</div>
+
+</body>

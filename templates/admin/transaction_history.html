@@ -1,0 +1,81 @@
+<body th:replace="layouts/admin_master :: master(~{::main}, 'Rental History', 'rental_history')">
+<main>
+    <div class="container-fluid">
+
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden mb-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-body">
+                        <div class="d-md-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 fw-semibold">Past Transaction History</h4>
+                            <div class="d-flex align-items-center mt-3 mt-md-0 gap-3">
+                                <a th:href="@{/rental}" class="btn btn-warning d-flex align-items-center">
+                                    <i class="ti ti-arrow-back-up me-1"></i> Back to Pending Reservations
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card w-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="card-title fw-semibold">Completed Transactions</h5>
+                    <input type="text" id="rentalSearch" class="form-control w-25" placeholder="Search by Plate # or Customer Name">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table text-nowrap mb-0 align-middle">
+                        <thead class="text-dark fs-4">
+                        <tr>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Ref #</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Vehicle (Plate #)</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Customer</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Date Out</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Date Back</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Total Cost</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Actions</h6></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:if="${completedReservations == null or completedReservations.isEmpty()}">
+                            <td colspan="7" class="text-center py-4 text-muted border-top">
+                                No completed transaction was found.
+                            </td>
+                        </tr>
+
+                        <tr th:each="reservation : ${completedReservations}">
+                            <td class="border-bottom-0" th:text="'#R' + ${reservation.id}">#R101</td>
+
+                            <td class="border-bottom-0">
+                                <span class="fw-semibold" th:text="${reservation.vehicle.vehicleModel}">Vehicle Model</span>
+                                <p class="text-muted mb-0 fs-3" th:text="'(' + ${reservation.vehicle.plateNumber} + ')'">(PLATE-000)</p>
+                            </td>
+
+                            <td class="border-bottom-0" th:text="${reservation.client.customerName}">Jane Doe</td>
+
+                            <td class="border-bottom-0" th:text="${#temporals.format(reservation.pickupDate, 'MMM d, yyyy')}">Jan 1, 2026</td>
+
+                            <td class="border-bottom-0" th:text="${#temporals.format(reservation.returnDate, 'MMM d, yyyy')}">Jan 5, 2026</td>
+
+                            <td class="border-bottom-0">
+                                <h6 class="fw-semibold mb-0 text-dark" th:text="${'₱' + #numbers.formatDecimal(reservation.totalCost, 0, 'COMMA', 2, 'POINT')}">₱2,796.00</h6>
+                            </td>
+
+                            <td class="border-bottom-0">
+                                <a th:href="@{/reservation/receipt/{id}(id=${reservation.id})}" class="btn btn-sm btn-outline-primary">
+                                    <i class="ti ti-file-text"></i> Receipt
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

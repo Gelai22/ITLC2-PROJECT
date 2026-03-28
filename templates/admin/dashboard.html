@@ -1,0 +1,96 @@
+<body xmlns:th="http://www.thymeleaf.org"
+      th:replace="layouts/admin_master :: master(~{::main}, 'Dashboard', 'dashboard')">
+<main>
+    <div class="container-fluid">
+
+        <div class="py-9 px-6 text-center"></div>
+        <div class="py-9 px-6 text-center"></div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="card-title fw-semibold mb-3">Available Vehicles</h5>
+                                <h2 class="fw-semibold mb-0 text-success" th:text="${availableVehiclesCount}"></h2>
+                                <p class="fs-3 mb-0 text-muted">Out of <span th:text="${totalFleetCount}">60</span> Total Fleet</p>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end align-items-center">
+                                <div class="text-white bg-success rounded-circle p-4 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-circle-check fs-6"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="card-title fw-semibold mb-3">Clients on Pending</h5>
+                                <h2 class="fw-semibold mb-0 text-primary" th:text="${pendingClientsCount}"></h2>
+                                <p class="fs-3 mb-0 text-muted">Reservations Awaiting Approval</p>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end align-items-center">
+                                <div class="text-white bg-primary rounded-circle p-4 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-alert-circle fs-6"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="card-title fw-semibold mb-3">Rented Out</h5>
+                                <h2 class="fw-semibold mb-0 text-secondary" th:text="${rentedOutCount}"></h2>
+                                <p class="fs-3 mb-0 text-muted">Currently on the Road</p>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end align-items-center">
+                                <div class="text-white bg-secondary rounded-circle p-4 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-road fs-6"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-8">
+                                <h5 class="card-title fw-semibold mb-3">In Maintenance</h5>
+                                <h2 class="fw-semibold mb-0 text-danger" th:text="${inMaintenanceCount}"></h2>
+                                <p class="fs-3 mb-0 text-muted">Unavailable for Rent</p>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end align-items-center">
+                                <div class="text-white bg-danger rounded-circle p-4 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-tool fs-6"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center mt-3">
+                <a th:href="@{/car/list}" class="btn btn-outline-dark">Go to Full Car Inventory List</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>

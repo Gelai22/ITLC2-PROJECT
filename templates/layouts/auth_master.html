@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="auth_master (authContent, pageTitle, loginLink)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle} ?: 'Authentication'"></title>
+
+    <link rel="shortcut icon" type="image/png" th:href="@{/images/logos/favicon.png}" />
+    <link rel="stylesheet" th:href="@{/css/styles.min.css}" />
+    <style>
+        .bg-orange-accent {
+            background-color: #ff9933;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div
+            class="position-relative overflow-hidden bg-orange-accent min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+
+                <div class="col-md-8 col-lg-6 col-xxl-4">
+
+                    <div class="card mb-0">
+                        <div class="card-body">
+
+                            <a th:href="@{/static}" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                <img th:src="@{/images/logos/logo.png}" alt="ParkUp Logo" width="300" class="d-block mx-auto">
+                            </a>
+                            <p class="text-center">ParkUp System Access</p>
+
+                            <div th:replace="${authContent}">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/auth-functions.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+</body>
+
+</html>

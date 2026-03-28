@@ -1,0 +1,112 @@
+<body xmlns:th="http://www.thymeleaf.org"
+      th:replace="layouts/admin_master :: master(~{::main}, ${pageTitle}, 'add_car')">
+<main>
+    <div class="container-fluid">
+
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden mb-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-body">
+                        <h4 class="mb-0 fw-semibold" th:text="${pageTitle}">Add New Vehicle to Fleet</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title fw-semibold mb-4">Vehicle Details</h5>
+
+                <form th:action="@{/car/save}" th:object="${vehicle}" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="brand" class="form-label">Brand/Model</label>
+                            <input type="text" th:field="*{vehicleModel}" class="form-control" id="brand" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="year" class="form-label">Year</label>
+                            <input type="number" th:field="*{year}" class="form-control" id="year" min="1990" max="2099" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="licensePlate" class="form-label">License Plate / VIN (Unique ID)</label>
+                            <input type="text"
+                                   th:field="*{plateNumber}"
+                                   class="form-control"
+                                   id="licensePlate"
+                                   required
+                                   pattern="[A-Za-z]{4}[-][0-9]{4}"
+                                   title="Must be 4 letters followed by a hyphen and 4 numbers (e.g., AAAA-0000)"
+                                   oninput="validateLicensePlate(this)">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dailyRate" class="form-label">Daily Rental Rate (₱)</label>
+                            <input type="number" th:field="*{rentalPrice}" class="form-control" id="dailyRate" step="0.01" min="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="vehicleType" class="form-label">Vehicle Type</label>
+                            <select th:field="*{vehicleType}" class="form-select" id="vehicleType" required>
+                                <option value="">Select Type</option>
+                                <option value="SEDAN">Sedan</option>
+                                <option value="SUV">SUV</option>
+                                <option value="VAN">Van/Minivan</option>
+                                <option value="COUPE">Coupe</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="numberOfSeats" class="form-label">Number of Seats</label>
+                            <select th:field="*{numberOfSeats}" class="form-select" id="numberOfSeats" required>
+                                <option value="">Select Seats</option>
+                                <option value="2">2 Seats</option>
+                                <option value="4">4 Seats</option>
+                                <option value="5">5 Seats</option>
+                                <option value="7">7 Seats</option>
+                                <option value="8">8 Seats</option>
+                                <option value="12">12+ Seats (Van)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="status" class="form-label">Current Status</label>
+                            <select th:field="*{status}" class="form-select" id="status" required>
+                                <option value="AVAILABLE">Available</option>
+                                <option value="MAINTENANCE">In Maintenance</option>
+                                <option value="RENTED">Rented Out</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="vehicleImage" class="form-label">Vehicle Photo (Optional)</label>
+                            <input type="file"
+                                   name="vehicleImage"
+                                   class="form-control"
+                                   id="vehicleImage"
+                                   accept="image/jpeg, image/png">
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="ti ti-device-floppy me-1"></i> Save Vehicle
+                        </button>
+                        <a th:href="@{/car/list}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>

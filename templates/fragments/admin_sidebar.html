@@ -1,0 +1,59 @@
+<aside class="left-sidebar" th:fragment="sidebar">
+    <div>
+        <div class="py-9 px-6 text-center"></div>
+        <div class="py-9 px-6 text-center"></div>
+        <div class="py-4 px-6 text-center"></div>
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Home</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link primary-hover-bg"
+                       th:classappend="${currentPage == 'dashboard'} ? 'active' : ''"
+                       th:href="@{/dashboard}"
+                       aria-expanded="false">
+                        <span><i class="ti ti-layout-dashboard"></i></span>
+                        <span class="hide-menu">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">INVENTORY</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link primary-hover-bg"
+                       th:classappend="${currentPage == 'car_list'} ? 'active' : ''"
+                       th:href="@{/car/list}"
+                       aria-expanded="false">
+                        <span><i class="ti ti-car-crane"></i></span>
+                        <span class="hide-menu">Car Fleet/Inventory</span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">OPERATIONS</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link primary-hover-bg"
+                       th:classappend="${currentPage == 'pending_rentals'} ? 'active' : ''"
+                       th:href="@{/rental}"
+                       aria-expanded="false">
+                        <span><i class="ti ti-alarm"></i></span>
+                        <span class="hide-menu">Pending Rentals</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link primary-hover-bg"
+                       th:classappend="${currentPage == 'maintenance_log'} ? 'active' : ''"
+                       th:href="@{/maintenance}"
+                       aria-expanded="false">
+                        <span><i class="ti ti-settings"></i></span>
+                        <span class="hide-menu">Maintenance Log</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

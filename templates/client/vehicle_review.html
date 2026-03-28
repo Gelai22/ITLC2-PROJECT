@@ -1,0 +1,71 @@
+<body th:replace="layouts/client_master :: master(content = ~{::.content-wrapper}, title = 'Post-Rental Review', currentPage='my_reservations')">
+
+<div class="container-fluid content-wrapper">
+    <div class="card bg-light-info shadow-none overflow-hidden mb-4">
+        <div class="card-body">
+            <h4 class="mb-0 fw-semibold text-primary">Post-Rental Experience Review</h4>
+            <p class="mb-0">Please confirm the vehicle return and share your experience rating below.</p>
+        </div>
+    </div>
+
+    <div th:if="${reservation != null}" class="card shadow-sm mb-4">
+        <div class="card-body">
+
+            <h5 class="card-title fw-bold mb-4">Rental Summary #R<span th:text="${reservation.id}"></span></h5>
+
+            <table class="table table-borderless fs-4">
+                <tbody>
+                <tr>
+                    <td class="text-muted">Vehicle:</td>
+                    <td class="fw-semibold" th:text="${reservation.vehicle.vehicleModel + ' (' + reservation.vehicle.year + ')'}">Toyota Supra (2004)</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Return Date:</td>
+                    <td th:text="${#temporals.format(T(java.time.LocalDateTime).now(), 'MMM d, yyyy HH:mm')}">Nov 5, 2025 12:00</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Total Cost Paid:</td>
+                    <td class="fw-bold text-success"
+                        th:text="${'₱' + #numbers.formatDecimal(reservation.totalCost, 0, 'COMMA', 2, 'POINT')}">₱6,293.00</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">Status:</td>
+                    <td><span class="badge bg-danger" th:text="${reservation.status}">RETURNED_FOR_REVIEW</span></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <hr class="my-4"/>
+
+            <form th:action="@{/reservation/submit-return-review/{id}(id=${reservation.id})}" method="post">
+                <h5 class="card-title mb-3"><i class="ti ti-star me-2"></i> Rate Your Experience</h5>
+
+                <div class="mb-4">
+                    <label for="rentalRating" class="form-label">Rating (1 to 5 Stars)</label>
+                    <select name="rentalRating" class="form-select form-control" id="rentalRating" required>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Good</option>
+                        <option value="3">3 - Average</option>
+                        <option value="2">2 - Poor</option>
+                        <option value="1">1 - Very Poor</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="finalNotes" class="form-label">Additional Feedback (Optional)</label>
+                    <textarea name="finalNotes" class="form-control" id="finalNotes" rows="3"
+                              placeholder="Any comments about the vehicle or service..."></textarea>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg py-8">
+                        <i class="ti ti-send me-2"></i> Submit Review & Finalize Return
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>

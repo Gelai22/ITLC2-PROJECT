@@ -1,0 +1,121 @@
+<body th:replace="layouts/client_master :: master(content = ~{::.content-wrapper}, title = 'My Reservations', currentPage='my_reservations')">
+
+<div class="container-fluid content-wrapper">
+
+    <div class="card bg-light-info shadow-none position-relative overflow-hidden mb-4">
+        <div class="card-body">
+            <h4 class="mb-0 fw-semibold">Current/Pending Rental List</h4>
+            <p class="mb-0">List of your current and pending vehicle rental transactions.</p>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs" id="myReservationsTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" th:href="@{/reservation}" role="tab" aria-selected="true">
+                Active / Pending <span th:if="${pendingReservations != null}" class="badge bg-primary ms-1" th:text="${pendingReservations.size()}">0</span>
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link"
+               th:href="@{/reservation/history}"           role="tab" aria-selected="false">
+                Rental History <span th:if="${historyCount != null}" class="badge bg-secondary ms-1" th:text="${historyCount}">0</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content border border-top-0 bg-white p-4">
+
+        <div class="tab-pane fade show active" id="pending" role="tabpanel">
+
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-warning-subtle text-warning-emphasis">
+                    <h5 class="mb-0 fw-semibold">Reservations Awaiting Action (<span th:text="${pendingApproval.size()}">0</span>)</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div th:if="${pendingApproval.isEmpty()}" class="alert alert-info mb-0 border-0">
+                        No reservations are currently awaiting your action or administrator approval.
+                    </div>
+                    <div th:unless="${pendingApproval.isEmpty()}" class="table-responsive">
+                        <table class="table table-striped mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                            <tr>
+                                <th>Ref #</th>
+                                <th>Vehicle</th>
+                                <th>Dates</th>
+                                <th>Cost</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="log : ${pendingApproval}">
+                                <td th:text="'#R' + ${log.reservationId}">#R101</td>
+                                <td><span class="fw-semibold" th:text="${log.vehicleModel}">Vehicle Model</span></td>
+                                <td><span th:text="${#temporals.format(log.pickupDate, 'MMM d, yyyy')}"></span></td>
+                                <td><span th:text="${'₱' + #numbers.formatDecimal(log.totalCost, 0, 'COMMA', 2, 'POINT')}">₱2,796.00</span></td>
+
+                                <td>
+                                    <span th:if="${log.status == 'PENDING'}" class="badge bg-secondary" >Awaiting Admin</span>
+                                    <span th:if="${log.status == 'PENDING_PAYMENT'}" class="badge bg-warning">Payment Required</span>
+                                </td>
+
+                                <td>
+                                    <a th:if="${log.status == 'PENDING'}" href="#" class="btn btn-sm btn-outline-secondary disabled">Awaiting Admin</a>
+
+                                    <a th:if="${log.status == 'PENDING_PAYMENT'}"
+                                       th:href="@{/reservation/confirm/{id}(id=${log.reservationId})}"
+                                       class="btn btn-sm btn-success">Proceed to Payment</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-success-subtle text-success-emphasis">
+                    <h5 class="mb-0 fw-semibold">Confirmed & Ongoing Rentals (<span th:text="${confirmedOngoing.size()}">0</span>)</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div th:if="${confirmedOngoing.isEmpty()}" class="alert alert-info mb-0 border-0">
+                        You have no confirmed or ongoing active rentals.
+                    </div>
+                    <div th:unless="${confirmedOngoing.isEmpty()}" class="table-responsive">
+                        <table class="table table-striped mb-0 align-middle">
+                            <thead class="text-dark fs-4">
+                            <tr>
+                                <th>Ref #</th>
+                                <th>Vehicle</th>
+                                <th>Pick-up Date</th>
+                                <th>Return Date</th>
+                                <th>Duration</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="log : ${confirmedOngoing}">
+                                <td th:text="'#R' + ${log.reservationId}">#R102</td>
+                                <td><span class="fw-semibold" th:text="${log.vehicleModel}">Vehicle Model</span></td>
+                                <td><span th:text="${#temporals.format(log.pickupDate, 'MMM d, yyyy')}"></span></td>
+                                <td><span th:text="${#temporals.format(log.returnDate, 'MMM d, yyyy')}"></span></td>
+
+                                <td th:with="days=${T(java.time.temporal.ChronoUnit).DAYS.between(log.pickupDate, log.returnDate)}"
+                                    th:text="${days + ' days'}">7 days</td>
+
+                                <td>
+                                    <a th:href="@{/reservation/return/{id}(id=${log.reservationId})}" class="btn btn-sm btn-outline-danger me-2">Return Car</a>
+                                    <a th:href="@{/reservation/receipt/{id}(id=${log.reservationId})}" class="btn btn-sm btn-primary">View Receipt</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>

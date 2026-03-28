@@ -1,0 +1,98 @@
+<body xmlns:th="http://www.thymeleaf.org">
+<body th:replace="layouts/admin_master :: master(~{::main}, 'Maintenance Log', 'maintenance_log')">
+<main>
+    <div class="container-fluid">
+
+        <div class="card bg-light-info shadow-none position-relative overflow-hidden mb-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-body">
+                        <div class="d-md-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 fw-semibold">Vehicle Maintenance Log</h4>
+                            <div class="d-flex align-items-center mt-3 mt-md-0 gap-3">
+                                <h5 class="mb-0 fw-bold text-danger">Currently, In Shop: (<span th:text="${activeMaintenanceCount}">0</span>)</h5>
+                                <a th:href="@{/maintenance/new}" class="btn btn-primary d-flex align-items-center">
+                                    <i class="ti ti-tool me-1"></i> Log New Service
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card w-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="card-title fw-semibold">Service History</h5>
+                    <input type="text" id="serviceSearch" class="form-control w-25" placeholder="Search by Plate # or Service Type">
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table text-nowrap mb-0 align-middle">
+                        <thead class="text-dark fs-4">
+                        <tr>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Vehicle (Plate #)</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Type of Service</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Date Out</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Date Back (Est.)</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Cost (Est.)</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Status</h6></th>
+                            <th class="border-bottom-0"><h6 class="fw-semibold mb-0">Actions</h6></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="log : ${activeLogs}">
+                            <td class="border-bottom-0"><h6 class="fw-semibold mb-0" th:text="${log.vehiclePlateNumber}">GHGH-8787</h6></td>
+                            <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${log.serviceType}">Engine Repair</p></td>
+                            <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${#temporals.format(log.dateOut, 'MMM d, yyyy')}"></p></td>
+                            <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${#temporals.format(log.dateBackEstimate, 'MMM d, yyyy')}"></p></p></td>
+                            <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="'₱' + ${#numbers.formatDecimal(log.estimatedCost, 1, 2)}"></p></td>
+                            <td class="border-bottom-0"><span class="badge bg-danger rounded-3 fw-semibold" th:text="${log.status}">IN_PROGRESS</span></td>
+                            <td class="border-bottom-0">
+                                <a th:href="@{/maintenance/complete/{id}(id=${log.id})}" class="btn btn-sm btn-success">Complete</a>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(activeLogs)} and ${#lists.isEmpty(completedLogs)}">
+                            <td colspan="7" class="text-center py-4">
+                                No vehicles are currently in the shop.
+                            </td>
+                        </tr>
+
+                        <th:block th:if="${not #lists.isEmpty(completedLogs)}">
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted border-top fw-bold">
+                                    COMPLETED SERVICE HISTORY
+                                </td>
+                            </tr>
+
+                            <tr th:each="log : ${completedLogs}">
+                                <td class="border-bottom-0"><h6 class="fw-semibold mb-0" th:text="${log.vehiclePlateNumber}">HIST-0000</h6></td>
+                                <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${log.serviceType}">Completed Service</p></td>
+                                <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${#temporals.format(log.dateOut, 'MMM d, yyyy')}"></p></td>
+                                <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="${#temporals.format(log.dateBackActual, 'MMM d, yyyy')}"></p></td>
+                                <td class="border-bottom-0"><p class="mb-0 fw-normal" th:text="'₱' + ${#numbers.formatDecimal(log.estimatedCost, 1, 2)}"></p></td>
+                                <td class="border-bottom-0"><span class="badge bg-secondary rounded-3 fw-semibold" th:text="${log.status}">COMPLETED</span></td>
+                                <td class="border-bottom-0">
+                                    <span class="text-success">Finished</span>
+                                </td>
+                            </tr>
+                        </th:block>
+
+                        <tr th:if="${#lists.isEmpty(completedLogs)} and not ${#lists.isEmpty(activeLogs)}">
+                            <td colspan="7" class="text-center py-4 text-muted border-top">
+                                Historical Service Log is empty.
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="master(content, title, currentPage)">
+
+    <div th:insert="~{fragments/admin_modal :: admin_modal}"></div>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title th:text="${title} ?: 'ParkUp'"></title>
+        <link rel="shortcut icon" type="image/png" th:href="@{/images/logos/favicon.png}" />
+        <link rel="stylesheet" th:href="@{/css/styles.min.css}" />
+        <link rel="stylesheet" th:href="@{/css/custom-styles.css}" />
+    </head>
+
+    <body>
+
+    <div class="fixed-top-banner"><header th:replace="fragments/admin_header :: header"></header></div>
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+         data-sidebar-position="fixed" data-header-position="fixed">
+
+        <aside th:replace="fragments/admin_sidebar :: sidebar(currentPage=${currentPage})"></aside>
+
+        <div class="body-wrapper" style="padding-left: 0 !important;">
+
+            <div class="py-9 px-6 text-center"></div>
+            <div class="py-9 px-6 text-center"></div>
+
+
+            <main class="main">
+                <div th:replace="${content}">
+                </div>
+            </main>
+
+            <div class="py-6 px-6 text-center">
+                <p class="mb-0 fs-4">© 2025 ParkUp Car Rental Management System</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script th:src="@{/libs/jquery/dist/jquery.min.js}"></script>
+    <script th:src="@{/libs/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/sidebarmenu.js}"></script>
+    <script th:src="@{/js/app.min.js}"></script>
+    <script th:src="@{/js/modal-handler.js}"></script>
+    <script th:src="@{/js/form-validation.js}"></script>
+    </body>
+</div>
+
+</html>
